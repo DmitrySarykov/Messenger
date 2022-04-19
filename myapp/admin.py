@@ -19,8 +19,8 @@ admin.site.register(User, UserAdmin)
 
 @admin.register(Message)
 class MessageAdmin(admin.ModelAdmin):
-    list_display = ('from_user','to_user','date','message',)
-    filter = ('date',)
+    list_display = ('from_user','to_user','message',)
+    filter = ('date_created',)
 
 class GroupUsersInline(admin.TabularInline):                                                                                               
     model = GroupUser

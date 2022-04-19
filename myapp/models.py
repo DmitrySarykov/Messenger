@@ -1,5 +1,6 @@
 from django.db import models
 from datetime import date, datetime
+from django.utils import dateformat
 from django.contrib.auth.models import User
 from django.urls import reverse
 
@@ -47,11 +48,11 @@ class Message(models.Model):
     from_user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='От кого', related_name="from_user",null=True,)
     to_user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Кому',null=True, blank=True, related_name="to_user")
     group = models.ForeignKey(Group,on_delete=models.CASCADE, verbose_name='Группа', null=True, blank=True)
-    date = models.DateTimeField(default=datetime.now, verbose_name='Дата')
+    date = models.DateTimeField(auto_now_add=True, verbose_name='Дата')
     message = models.TextField(verbose_name='Сообщение', null=True)
 
     def __str__(self):
-        return f'{self.date} {self.from_user} -> {self.to_user}: {self.message}'
+        return f'{dateformat.format(self.date, "d.m.Y H:i:s")} {self.from_user}: {self.message}'
 
     class Meta:
         verbose_name = 'Сообщение'

@@ -116,7 +116,6 @@ USE_I18N = True
 USE_L10N = True
 USE_TZ = False
 TIME_ZONE = 'Europe/Moscow'
-DATE_FORMAT = 'd E Y'
 
 #LOGIN_REDIRECT_URL = '/'
 LOGIN_URL = '/accounts/login/'

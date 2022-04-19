@@ -1,26 +1,30 @@
 {% extends 'base.html' %}
 {% block header %}
+{% load static %}
 <h2>
   <a href="{% url 'message_list' %}">Назад</a>
+</h2>
+<h2>
   <img src="/{{user_to.userprofile.avatar}}" width="100" height="100" style="object-fit:cover; border-radius:50%;"> 
   {{user_to}}
 </h2>
+<hr>
 {% endblock %}
 {% block content %}
-
-  {% for message in message_list %}
-  
-  <div><p>{{message}}</p></div>
-  
-  {% endfor %}
-
+  <div class="chat">
+    {% for message in message_list %}
+      <p>{{message}}</p>
+    {% endfor %}
+  </div>
   <h2>Вы {{user_from}}</h2>
-  <form action="" method="post">
-        {% csrf_token %}
-        <p>Дата:{{form.date}}</p> 
-        <p>Кому:{{form.to_user}}</p> 
-        <p>От:{{form.from_user}}</p> 
-        <p>Сообщение:{{form.message}}</p> 
-        <button type="submit">Отправить</button>
+  <form id="form_chat">
+  <input type="hidden" id="csrf_token" value="{{csrf_token}}">
+  <input type="hidden" id="user_to" value="{{user_to.pk}}" name="user_to"> 
+  <input type="hidden" id="user_from" value="{{user_from.pk}}" name="user_from">
+  <p>Сообщение:<textarea id="message" value="" name="message"></textarea></p>
+  <button id="btn" type="submit">Отправить</button> 
   </form>
+{% endblock %}
+{% block scripts %}
+<script type="text/javascript" src="{% static 'scripts/chat.js' %}"></script>
 {% endblock %}

@@ -10,7 +10,7 @@ from django.views.generic.detail import DetailView
 from rest_framework import generics
 from .models import *
 from .forms import *
-from .serializers import MessageSerializer
+from .serializers import MessageSerializer, UserSerializer
 from django.contrib.auth.models import User
 from django.db.models import Q
 
@@ -30,16 +30,9 @@ class MessageListView(ListView):
         context['group_list'] = Group.objects.all()
         return context
 
-class ChatView(CreateView):
+class ChatView(ListView):
     model=Message
-    form_class = MessageForm
     template_name = 'chat.html'
-
-    def get_initial(self):
-        initial = super().get_initial()
-        initial['to_user'] = self.kwargs['to_user']
-        initial['from_user'] = self.request.user
-        return initial
 
     def get_context_data(self,**kwargs):
         context = super().get_context_data(**kwargs)
@@ -50,15 +43,27 @@ class ChatView(CreateView):
             Q(from_user = self.request.user) & Q(to_user = self.kwargs['to_user'])
         ).order_by("date")
         return context
-    
-    def get_success_url(self):
-        to_user=self.kwargs['to_user']
-        return reverse_lazy('chat', kwargs={'to_user': to_user})
 
 class GroupCreateView(CreateView):
     model=Group
     form_class = GroupForm
-    template_name = 'group_create.html'    
+    template_name = 'group_create.html'
+
+    def get_initial(self):
+        initial = super().get_initial()
+        initial['admin'] = self.request.user
+        return initial
+
+    def form_valid(self, form):
+        form.instance.save()
+        group_pk = form.instance.pk
+        group = Group.objects.get(pk = group_pk)
+        users = form.cleaned_data['users']
+        for user in users:
+            obj = GroupUser.objects.create(group = group, user = user)
+            obj.save()
+        
+        return super().form_valid(form)    
     
 class GroupView(TemplateView):
     model=Group
@@ -75,3 +80,14 @@ class GroupView(TemplateView):
 class MessageAPIView(generics.ListAPIView):
     queryset = Message.objects.all()
     serializer_class = MessageSerializer
+
+class MessageAPICreate(generics.CreateAPIView):
+    serializer_class = MessageSerializer
+    
+    # def perform_create(self, serializer):
+    #      data = serializer.data
+    #      serializer.save(data)
+
+class UserAPI(generics.ListAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
