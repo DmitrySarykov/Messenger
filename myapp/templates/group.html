@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block header %}
+<h2><a href="{% url 'message_list' %}">Назад</a> Группа {{self.name}}</h2>
+<h4>Участники: {% for user in user_list %}<img src="/{{user.user.userprofile.avatar}}" width="50" height="50" style="object-fit:cover; border-radius:50%;"> {{user}} {% endfor %}</h4>
+{% endblock %}
+{% block content %}
+    {% for message in message_list %}
+        <div><p>{{message}}</p></div>
+    {% endfor %}
+<h2>Вы {{request.user}}</h2>
+{% endblock %}

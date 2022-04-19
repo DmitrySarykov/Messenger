@@ -1,7 +1,12 @@
 from django.contrib import admin
 from django.urls import path, include
-from .views import MessageAPIView
+from .views import *
 urlpatterns = [
-    path("api/message_list/", MessageAPIView.as_view(), name="message_list"),
-    
+    path('', HomeView.as_view(), name='home'),
+    # API
+    path("api/message_list/", MessageAPIView.as_view(), name="api_message_list"),
+    path("message_list/", MessageListView.as_view(), name="message_list"),
+    path("<to_user>/chat/", ChatView.as_view(), name="chat"),
+    path("group_create/", GroupCreateView.as_view(), name="group_create"),
+    path("group/<pk>", GroupView.as_view(), name="group"),      
 ]

@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block header %}
+<h2>
+  <a href="{% url 'message_list' %}">Назад</a>
+  <img src="/{{user_to.userprofile.avatar}}" width="100" height="100" style="object-fit:cover; border-radius:50%;"> 
+  {{user_to}}
+</h2>
+{% endblock %}
+{% block content %}
+
+  {% for message in message_list %}
+  
+  <div><p>{{message}}</p></div>
+  
+  {% endfor %}
+
+  <h2>Вы {{user_from}}</h2>
+  <form action="" method="post">
+        {% csrf_token %}
+        <p>Дата:{{form.date}}</p> 
+        <p>Кому:{{form.to_user}}</p> 
+        <p>От:{{form.from_user}}</p> 
+        <p>Сообщение:{{form.message}}</p> 
+        <button type="submit">Отправить</button>
+  </form>
+{% endblock %}
