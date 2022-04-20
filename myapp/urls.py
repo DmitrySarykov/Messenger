@@ -13,4 +13,6 @@ urlpatterns = [
     path("api/user_list/", UserAPI.as_view(), name="api_user_list"), 
     path("api/message_list/", MessageAPIView.as_view(), name="api_message_list"), 
     path("api/message_create/", MessageAPICreate.as_view(), name="api_message_create"),
-]
+    path("api/group_list/", GroupListAPI.as_view(), name="api_group_list"), 
+    path("api/group_update/<pk>", GroupUpdateAPI.as_view(), name="api_group_update"), 
+ ]

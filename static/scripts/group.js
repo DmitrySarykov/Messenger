@@ -15,7 +15,7 @@ var ws;
       ws.close();
     }
 
-    ws = new WebSocket('ws://localhost:6969');
+    ws = new WebSocket('ws://127.0.0.1:6969');
     ws.onopen = () => {
       console.log('Соединение установлено!');
     }
@@ -52,7 +52,6 @@ var ws;
     fetch('http://127.0.0.1:8000/api/message_create/',options)
     .then(response => response.json())
     .then(json => {
-      console.log(json);
         ws.send(`${json.date} ${user_from}: ${message}`);
         showMessage(`${json.date} ${user_from}: ${message}`);
     })
@@ -65,6 +64,9 @@ function dateformat(value){
     let date = new Date(value);
     let d = date.getDate();
     let m = date.getMonth()+1
+    if (m < 9){
+      m = "0" + m
+    }
     let y = date.getFullYear();
     let h = date.getHours();
     let i = date.getMinutes();
