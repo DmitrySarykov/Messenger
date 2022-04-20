@@ -20,7 +20,8 @@ class UserProfile(models.Model):
 class Group(models.Model):
     admin = models.ForeignKey(User,on_delete=models.CASCADE, verbose_name='Создатель группы', related_name="user_admin",null=True)
     name = models.CharField(max_length=200, verbose_name='Название группы',)
-    users = models.ManyToManyField(User, blank=True, verbose_name='Участники'); 
+    users = models.ManyToManyField(User, blank=True, verbose_name='Участники')
+    avatar = models.ImageField(upload_to='static/images/groups/', verbose_name='Аватарка',null=True, blank=True) 
 
     def get_absolute_url(self):
         return reverse('group', kwargs={'pk' : self.pk})   

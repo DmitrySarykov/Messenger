@@ -1,30 +1,23 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
+<a href="{% url 'message_list' %}">Назад</a>
 <h2>
-  <a href="{% url 'message_list' %}">Назад</a>
+    <img src="/{{user_to.userprofile.avatar}}" width="100" height="100" style="object-fit:cover; border-radius:50%;"> 
+    {{user_to}}
 </h2>
-<h2>
-  <img src="/{{user_to.userprofile.avatar}}" width="100" height="100" style="object-fit:cover; border-radius:50%;"> 
-  {{user_to}}
-</h2>
-<hr>
-  <div class="chat">
+  <div id="chat">
     {% for message in message_list %}
       <p>{{message}}</p>
     {% endfor %}
   </div>
-  <h2>Вы {{user_from}}</h2>
-  <button id="socket-open" type="button">Соеденить</button>
-  <button id="socket-close" type="button">Разъеденить</button> 
-  
-  <form id="form_chat">
+
     <input type="hidden" id="csrf_token" value="{{csrf_token}}">
     <input type="hidden" id="user_to" value="{{user_to.pk}}" name="user_to"> 
     <input type="hidden" id="user_from" value="{{user_from.pk}}" name="user_from">
-    <p>Сообщение:<textarea id="message" value="" name="message"></textarea></p>
+    <p>Сообщение:<br><textarea id="message" value="" name="message"></textarea></p>
     <button id="btn" type="submit">Отправить</button> 
-  </form>
+  
 {% endblock %}
 {% block scripts %}
 <script type="text/javascript" src="{% static 'scripts/chat.js' %}"></script>

@@ -7,7 +7,7 @@ from .models import *
 class MessageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Message
-        fields = ("from_user","to_user","date","message")
+        fields = '__all__'
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:

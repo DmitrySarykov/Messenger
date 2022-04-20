@@ -11,3 +11,7 @@ class GroupForm(forms.ModelForm):
         model = Group
         fields = '__all__'
 
+class UserProfileForm(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = '__all__'

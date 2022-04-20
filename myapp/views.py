@@ -20,6 +20,19 @@ class HomeView(LoginRequiredMixin,TemplateView):
     def get(self, *args, **kwargs):
         return redirect('message_list')
 
+class UserUpdateView(LoginRequiredMixin,UpdateView):
+    model=UserProfile
+    form_class = UserProfileForm
+    template_name = 'account.html'
+    
+    def get_initial(self):
+        initial = super().get_initial()
+        initial['user'] = self.request.user
+        return initial
+
+    def get_success_url(self):
+        return reverse_lazy('message_list')
+
 class MessageListView(LoginRequiredMixin,ListView):
     model=Message
     template_name = 'message_list.html'

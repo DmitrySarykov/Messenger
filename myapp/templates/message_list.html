@@ -2,19 +2,21 @@
 {% load static %}
 {% block content %}
 <h2>Сообщения</h2>
-<hr>
-    {% for user in user_list %}
-        <h3>
-            <a href="{% url "chat" user.pk %}">
-            <img src="/{{user.userprofile.avatar}}" width="100" height="100" style="object-fit:cover; border-radius:50%;">
-            {{user}}
-            </a>
-        </h3>
-    {% endfor %}
-    {% for group in group_list %}
-       <h3>
-           <a href="{% url "group" group.pk %}">{{group}}</a>
-        </h3>
-    {% endfor %}
-    <p><a href="{% url 'group_create' %}">Создать группу</a></p>    
+{% for user in user_list %}
+    <h3>
+        <a href="{% url "chat" user.pk %}">
+        <img src="/{{user.userprofile.avatar}}" width="100" height="100" style="object-fit:cover; border-radius:50%;">
+        {{user}}
+        </a>
+    </h3>
+{% endfor %}
+{% for group in group_list %}
+    <h3>
+        <a href="{% url "group" group.pk %}">
+            <img src="/{{group.avatar}}" width="100" height="100" style="object-fit:cover; border-radius:50%;">
+            {{group}}
+        </a>
+    </h3>
+{% endfor %}
+<p><a href="{% url 'group_create' %}">Создать группу</a></p>    
 {% endblock %}

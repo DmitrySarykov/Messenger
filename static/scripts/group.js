@@ -35,13 +35,13 @@ var ws;
     // Отправка сообщения json через API
     const message = document.getElementById('message').value;
     const srftoken = document.getElementById("csrf_token").value
-    const user_to = document.getElementById("user_to").value;
+    const group = document.getElementById("group").value;
     const user_from = document.getElementById("user_from").value;
     const options = {
          method: 'POST',
          body: JSON.stringify({
-            to_user: user_to,
             from_user: user_from,
+            group: group,
             message: message
          }),
          headers: {
@@ -52,6 +52,7 @@ var ws;
     fetch('http://127.0.0.1:8000/api/message_create/',options)
     .then(response => response.json())
     .then(json => {
+      console.log(json);
         ws.send(`${json.date} ${user_from}: ${message}`);
         showMessage(`${json.date} ${user_from}: ${message}`);
     })
