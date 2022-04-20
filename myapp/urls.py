@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.http import HttpResponse
 from django.urls import path, include
 from .views import *
 urlpatterns = [
@@ -10,5 +11,5 @@ urlpatterns = [
     # API
     path("api/user_list/", UserAPI.as_view(), name="api_user_list"), 
     path("api/message_list/", MessageAPIView.as_view(), name="api_message_list"), 
-    path("api/message_create/", MessageAPICreate.as_view(), name="api_message_create"), 
+    path("api/message_create/", MessageAPICreate.as_view(), name="api_message_create"),
 ]

@@ -13,14 +13,14 @@ from .forms import *
 from .serializers import MessageSerializer, UserSerializer
 from django.contrib.auth.models import User
 from django.db.models import Q
+from django.contrib.auth.mixins import LoginRequiredMixin
 
-
-class HomeView(TemplateView):
+class HomeView(LoginRequiredMixin,TemplateView):
     template_name = 'myapp/message_list.html'
     def get(self, *args, **kwargs):
         return redirect('message_list')
 
-class MessageListView(ListView):
+class MessageListView(LoginRequiredMixin,ListView):
     model=Message
     template_name = 'message_list.html'
 
@@ -30,7 +30,7 @@ class MessageListView(ListView):
         context['group_list'] = Group.objects.all()
         return context
 
-class ChatView(ListView):
+class ChatView(LoginRequiredMixin,ListView):
     model=Message
     template_name = 'chat.html'
 
@@ -44,7 +44,7 @@ class ChatView(ListView):
         ).order_by("date")
         return context
 
-class GroupCreateView(CreateView):
+class GroupCreateView(LoginRequiredMixin,CreateView):
     model=Group
     form_class = GroupForm
     template_name = 'group_create.html'
@@ -65,7 +65,7 @@ class GroupCreateView(CreateView):
         
         return super().form_valid(form)    
     
-class GroupView(TemplateView):
+class GroupView(LoginRequiredMixin,TemplateView):
     model=Group
     template_name = 'group.html'
 

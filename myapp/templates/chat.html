@@ -15,12 +15,15 @@
     {% endfor %}
   </div>
   <h2>Вы {{user_from}}</h2>
+  <button id="socket-open" type="button">Соеденить</button>
+  <button id="socket-close" type="button">Разъеденить</button> 
+  
   <form id="form_chat">
-  <input type="hidden" id="csrf_token" value="{{csrf_token}}">
-  <input type="hidden" id="user_to" value="{{user_to.pk}}" name="user_to"> 
-  <input type="hidden" id="user_from" value="{{user_from.pk}}" name="user_from">
-  <p>Сообщение:<textarea id="message" value="" name="message"></textarea></p>
-  <button id="btn" type="submit">Отправить</button> 
+    <input type="hidden" id="csrf_token" value="{{csrf_token}}">
+    <input type="hidden" id="user_to" value="{{user_to.pk}}" name="user_to"> 
+    <input type="hidden" id="user_from" value="{{user_from.pk}}" name="user_from">
+    <p>Сообщение:<textarea id="message" value="" name="message"></textarea></p>
+    <button id="btn" type="submit">Отправить</button> 
   </form>
 {% endblock %}
 {% block scripts %}
