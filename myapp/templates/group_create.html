@@ -1,9 +1,7 @@
 {% extends 'base.html' %}
-{% block header %}
+{% block content %}
 <h2><a href="{% url 'message_list' %}">Назад</a></h2>
 <h2>Создание группы</h2><hr>
-{% endblock %}
-{% block content %}
   <form action="" method="post">
         {% csrf_token %}
         {{form}}

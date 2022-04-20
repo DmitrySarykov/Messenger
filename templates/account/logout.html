@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block header %}{% endblock %}
+
+{% block content %}
+<h1>Подтверждение выхода</h1>
+<p>Вы уверены, что хотите выйти?</p>
+
+<form method="post" action="{% url 'account_logout' %}">
+  {% csrf_token %}
+  {% if redirect_field_value %}
+  <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+  {% endif %}
+  <button type="submit">Выйти</button> <a href="{% url 'message_list' %}">Отмена</a>
+</form>
+
+{% endblock %}

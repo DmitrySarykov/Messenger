@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
-{% block header %}
 {% load static %}
+{% block content %}
 <h2>
   <a href="{% url 'message_list' %}">Назад</a>
 </h2>
@@ -9,8 +9,6 @@
   {{user_to}}
 </h2>
 <hr>
-{% endblock %}
-{% block content %}
   <div class="chat">
     {% for message in message_list %}
       <p>{{message}}</p>

@@ -8,6 +8,18 @@
 </head>
 <body>
     {% block header %}
+
+    {% if user.is_authenticated %}
+    <h2>
+        <img src="/{{user.userprofile.avatar}}" width="100" height="100" style="object-fit:cover; border-radius:50%;"> 
+        {{user.username}}
+        <a href="">Изменить</a>
+        <a href="{% url 'account_logout' %}">Выйти</a>
+    </h2>
+    {% else %}
+        <a href="{% url 'account_login' %}">Войти</a>
+    {% endif %}
+
     {% endblock %}
     {% block content %}
 

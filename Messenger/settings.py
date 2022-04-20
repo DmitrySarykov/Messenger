@@ -40,7 +40,10 @@ INSTALLED_APPS = [
     'myapp',
     'rest_framework',
     'django_filters',
-    
+    # Авторизация
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
 ]
 
 MIDDLEWARE = [
@@ -117,7 +120,7 @@ USE_L10N = True
 USE_TZ = False
 TIME_ZONE = 'Europe/Moscow'
 
-#LOGIN_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/message_list/'
 LOGIN_URL = '/accounts/login/'
 LOGOUT_REDIRECT_URL = '/'
 ACCOUNT_EMAIL_VERIFICATION = "none"
