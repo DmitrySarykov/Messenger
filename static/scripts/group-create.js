@@ -25,12 +25,12 @@ group_create.addEventListener("click", (e)=>{
     }
     fetch("http://127.0.0.1:8000/api/group/create/",options)
     .then(response => response.json())
-    .then(json => console.log(json)).then(groupRedirect());
-    let form = document.getElementById("group-create-form");
-    form.reset();
+    .then(json => groupRedirect(json))
+    .catch(console.log("Ошибка"))
 });
 
-function groupRedirect(){
+function groupRedirect(json){
+    console.log(json);
     window.location.replace('http://127.0.0.1:8000/messages/');
 }
 

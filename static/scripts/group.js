@@ -49,12 +49,13 @@ var ws;
              "Content-type": "application/json; charset=UTF-8"
          }
     }
-    fetch('http://127.0.0.1:8000/api/message_create/',options)
+    fetch('http://127.0.0.1:8000/api/message/create/',options)
     .then(response => response.json())
     .then(json => {
         ws.send(`${json.date} ${user_from}: ${message}`);
         showMessage(`${json.date} ${user_from}: ${message}`);
-    })
+        document.getElementById('message').value = "";
+    }).catch(console.log("Ошибка"))
     
   }
   init();

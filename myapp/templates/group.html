@@ -6,7 +6,6 @@
     <img src="/{{group.avatar}}" width="100" height="100" style="object-fit:cover; border-radius:50%;">
     <span id="group-now">{{group.name}}</span> 
     <button id="edit_group" type="button">Изменить</button>
-    <button id="delete_group" type="button">Удалить группу</button>
     <div class="group-edit-form" style="display:none">
         <input type="text" id="group-name" value="{{group.name}}" name="group-name">
         <button id="group_update" type="button">Изменить</button>
@@ -35,5 +34,4 @@
 {% block scripts %}
 <script type="text/javascript" src="{% static 'scripts/group.js' %}"></script>
 <script type="text/javascript" src="{% static 'scripts/group-update.js' %}"></script>
-<script type="text/javascript" src="{% static 'scripts/group-delete.js' %}"></script>
 {% endblock %}

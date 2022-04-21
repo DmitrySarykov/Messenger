@@ -52,12 +52,13 @@ var ws;
              "Content-type": "application/json; charset=UTF-8"
          }
     }
-    fetch('http://127.0.0.1:8000/api/message_create/',options)
+    fetch('http://127.0.0.1:8000/api/message/create/',options)
     .then(response => response.json())
     .then(json => {
         let date = dateformat(json.date);
         ws.send(`${date} ${user_from}: ${message}`);
         showMessage(`${date} ${user_from}: ${message}`);
+        document.getElementById('message').value = "";
     })
     
   }

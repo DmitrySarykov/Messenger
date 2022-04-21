@@ -4,15 +4,21 @@
 {% endblock %}
 {% block content %}
 <h2>
-    <img src="/{{user.userprofile.avatar}}" width="100" height="100" style="object-fit:cover; border-radius:50%;"> 
-    {{user.username}}
+    {% if user.userprofile.avatar %}
+        <img id="avatar-now" src="/{{user.userprofile.avatar}}" width="100" height="100" style="object-fit:cover; border-radius:50%;"> 
+    {% else %}
+        <img id="avatar-now" src="/static/images/default/user.jpg" width="100" height="100" style="object-fit:cover; border-radius:50%;">
+    {% endif %}
+    <span id="user-now">{{user.username}}</span>
     <a href="{% url 'account_logout' %}">Выйти</a>
 </h2>
 <hr>
 <a href="{% url 'message_list' %}">Назад</a>
-   <form method="post" action="{{request.path}}">
-        {% csrf_token %}
-        {{form}}
-        <button type="submit">Сохранить</button>
-   </form>
+    <input type="hidden" id="csrf_token" value="{{csrf_token}}">
+    <input type="hidden" id="user" value="{{user.pk}}" name="user">
+    <input type="text" id="user-name" value="{{user.username}}" name="user-name">
+    <button id="user_update" type="button">Изменить</button>
+{% endblock %}
+{% block scripts %}
+<script type="text/javascript" src="{% static 'scripts/user-update.js' %}"></script>
 {% endblock %}

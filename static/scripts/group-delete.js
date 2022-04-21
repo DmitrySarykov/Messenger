@@ -1,6 +1,11 @@
-delete_group.addEventListener("click", (e)=>{
+const delete_group = document.querySelectorAll(".delete_group");
+delete_group.forEach(element => {
+    element.addEventListener("click", deleteGroup);
+});
+
+function deleteGroup(e){
     const srftoken = document.getElementById("csrf_token").value;
-    const group_pk = document.getElementById("group").value;
+    const group_pk = e.target.previousElementSibling.value;
     let url = `http://127.0.0.1:8000/api/group/delete/${group_pk}`
     const options = {
          method: 'DELETE',
@@ -13,10 +18,9 @@ delete_group.addEventListener("click", (e)=>{
          }
     }
     fetch(url,options)
-    .then(response => response.json())
-    .then(json => console.log(json)).then(groupRedirect())
-});
-
-function groupRedirect(){
-    window.location.replace('http://127.0.0.1:8000/messages/');
+    clearGroupInList(group_pk)
+}
+function clearGroupInList(group){
+    let item= document.getElementById(`group-${group}`);
+    message_list.removeChild(item);
 }

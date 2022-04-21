@@ -1,3 +1,4 @@
+from tokenize import group
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
@@ -24,18 +25,14 @@ class UserListView(LoginRequiredMixin,ListView):
     model = User
     template_name = 'user_list.html'
     
-class UserUpdateView(LoginRequiredMixin,UpdateView):
+class UserUpdateView(LoginRequiredMixin,TemplateView):
     model = UserProfile
-    form_class = UserProfileForm
     template_name = 'account.html'
     
-    def get_initial(self):
-        initial = super().get_initial()
-        initial['user'] = self.request.user
-        return initial
-
-    def get_success_url(self):
-        return reverse_lazy('message_list')
+    def get_context_data(self,**kwargs):
+        context = super().get_context_data(**kwargs)
+        context['user'] = self.request.user
+        return context 
 
 class MessageListView(LoginRequiredMixin,ListView):
     model = Message
@@ -43,8 +40,20 @@ class MessageListView(LoginRequiredMixin,ListView):
 
     def get_context_data(self,**kwargs):
         context = super().get_context_data(**kwargs)
-        context['user_list'] = User.objects.all()
-        context['group_list'] = Group.objects.all()
+        user_list = []
+        for user in User.objects.all():
+            if len( Message.objects.filter(
+            Q(from_user = user) & Q(to_user = self.request.user) |
+            Q(from_user = self.request.user) & Q(to_user = user)) ) > 0:
+                user_list.append(user)    
+        context['user_list'] = user_list
+        
+        group_list = []
+        for group in Group.objects.all():
+            if self.request.user.pk in list(group.users.values_list("pk", flat=True)) or self.request.user == group.admin:
+                group_list.append(group)
+        context['group_list'] = group_list
+        
         return context
 
 class ChatView(LoginRequiredMixin,ListView):
@@ -93,10 +102,45 @@ class UserListAPI(generics.ListAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
+class UserAPI(generics.RetrieveAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+class UserUpdateAPI(generics.UpdateAPIView):
+    serializer_class = UserSerializer
+    
+    def get_object(self):
+        obj = User.objects.get(pk = self.kwargs['pk'])
+        return obj
+
+class AvatarUpdateAPI(generics.UpdateAPIView):
+    serializer_class = UserProfileSerializer
+    
+    def get_object(self):
+        obj = UserProfile.objects.get(pk = self.kwargs['pk'])
+        return obj
+
+# API Chat
+class ChatAPI(generics.ListAPIView):
+    serializer_class = MessageSerializer
+    
+    def get_queryset(self):
+        queryset = Message.objects.filter(
+            Q(from_user = self.request.user.pk) & Q(to_user = self.kwargs["pk"]) |
+            Q(from_user = self.kwargs["pk"]) & Q(to_user = self.request.user.pk))
+        return queryset
+
 # API Group
 class GroupListAPI(generics.ListAPIView):
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
+
+class GroupAPI(generics.ListAPIView):
+    serializer_class = MessageSerializer
+    
+    def get_queryset(self):
+        queryset = Message.objects.filter(group = self.kwargs['pk'])
+        return queryset
 
 class GroupCreateAPI(generics.CreateAPIView):
     serializer_class = GroupSerializer
@@ -114,4 +158,7 @@ class GroupDeleteAPI(generics.DestroyAPIView):
     def get_object(self):
         obj = Group.objects.get(pk = self.kwargs['pk'])
         return obj
+
+
+
 

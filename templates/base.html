@@ -15,9 +15,13 @@
 
     {% if user.is_authenticated %}
     <h2>
-        <img src="/{{user.userprofile.avatar}}" width="100" height="100" style="object-fit:cover; border-radius:50%;"> 
+        {% if user.userprofile.avatar %}
+            <img src="/{{user.userprofile.avatar}}" width="100" height="100" style="object-fit:cover; border-radius:50%;">
+        {% else %}
+            <img src="/static/images/default/user.jpg" width="100" height="100" style="object-fit:cover; border-radius:50%;">
+        {% endif %}
         {{user.username}}
-        <a href="{% url 'account_edit' user.pk %}">Изменить</a>
+        <a href="{% url 'account_edit' request.user.pk %}">Изменить</a>
         <a href="{% url 'account_logout' %}">Выйти</a>
     </h2>
     <a href="{% url 'user_list' %}">Пользователи</a>
@@ -28,10 +32,8 @@
     <hr>
     {% endblock %}
     {% block content %}
-
     {% endblock %}
     {% block footer %}
-
     {% endblock %}
     {% block scripts %}
     {% endblock %}
