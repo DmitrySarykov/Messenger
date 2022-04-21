@@ -3,12 +3,21 @@
 
 {% block content %}
 <a href="{% url 'message_list' %}">Назад</a>
-<input type="hidden" id="csrf_token" value="{{csrf_token}}">
-<input type="text" id="group-admin" value="" name="group-admin">
-<input type="text" id="group-name" value="" name="group-name">
-
-<button id="group-create" type="button">Создать</button>
+<form id="group-create-form">
+    <input type="hidden" id="csrf_token" value="{{csrf_token}}">
+    <label for="group-admin">Создатель<input type="text" id="group-admin" value="{{user_admin.pk}}" name="group-admin"></label>
+    <label for="group-name">Название<input type="text" id="group-name" value="" name="group-name"></label>
+    <p>Участники:</p>
+    {% for user in user_list %}
+        {% if user.pk != user_admin.pk %}
+        <label for="user-{{user.pk}}">{{user.username}}<input type="checkbox" class="users_input" id="user-{{user.pk}}" value="{{user.pk}}" name="group-users"></label>
+        {% endif %}
+    {% endfor %}
+    <br>
+    <button id="group_create" type="button">Создать</button>
+</form>
+<span id="message-group"></span>
 {% endblock %}
 {% block scripts %}
-{% comment %} <script type="text/javascript" src="{% static 'scripts/group-create.js' %}"></script> {% endcomment %}
+<script type="text/javascript" src="{% static 'scripts/group-create.js' %}"></script>
 {% endblock %}

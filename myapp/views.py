@@ -21,11 +21,11 @@ class HomeView(LoginRequiredMixin,TemplateView):
         return redirect('message_list')
 
 class UserListView(LoginRequiredMixin,ListView):
-    model=User
+    model = User
     template_name = 'user_list.html'
     
 class UserUpdateView(LoginRequiredMixin,UpdateView):
-    model=UserProfile
+    model = UserProfile
     form_class = UserProfileForm
     template_name = 'account.html'
     
@@ -38,17 +38,17 @@ class UserUpdateView(LoginRequiredMixin,UpdateView):
         return reverse_lazy('message_list')
 
 class MessageListView(LoginRequiredMixin,ListView):
-    model=Message
+    model = Message
     template_name = 'message_list.html'
 
     def get_context_data(self,**kwargs):
         context = super().get_context_data(**kwargs)
-        context['user_list'] = User.objects.all() # Исключаем администраторов .exclude(is_superuser = True)
+        context['user_list'] = User.objects.all()
         context['group_list'] = Group.objects.all()
         return context
 
 class ChatView(LoginRequiredMixin,ListView):
-    model=Message
+    model = Message
     template_name = 'chat.html'
 
     def get_context_data(self,**kwargs):
@@ -62,19 +62,21 @@ class ChatView(LoginRequiredMixin,ListView):
         return context
 
 class GroupCreateView(LoginRequiredMixin,TemplateView):
-    model = Group
     template_name = 'group_create.html'  
     
+    def get_context_data(self,**kwargs):
+        context = super().get_context_data(**kwargs)
+        context['user_admin'] = self.request.user
+        context['user_list'] = User.objects.all()
+        return context  
 
 class GroupView(LoginRequiredMixin,TemplateView):
-    model = Group
     template_name = 'group.html'
 
     def get_context_data(self,**kwargs):
         context = super().get_context_data(**kwargs)
         context['user_from'] = self.request.user.pk
         context['group'] = Group.objects.get(pk = self.kwargs['pk'])
-        context['user_list'] = GroupUser.objects.filter(group = self.kwargs['pk'])
         context['message_list'] = Message.objects.filter(group = self.kwargs['pk'])
         return context  
 
@@ -106,4 +108,10 @@ class GroupUpdateAPI(generics.UpdateAPIView):
         obj = Group.objects.get(pk = self.kwargs['pk'])
         return obj
 
-# API Chat
+class GroupDeleteAPI(generics.DestroyAPIView):
+    serializer_class = GroupSerializer
+    
+    def get_object(self):
+        obj = Group.objects.get(pk = self.kwargs['pk'])
+        return obj
+

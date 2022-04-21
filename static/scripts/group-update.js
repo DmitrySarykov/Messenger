@@ -29,7 +29,7 @@ group_update.addEventListener("click", (e)=>{
 });
 
 function changeGroup(json){
-    let group = document.getElementById("group-name");
+    let group = document.getElementById("group-now");
     group.innerHTML = json.name;
 }
 

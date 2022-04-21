@@ -22,13 +22,8 @@ class MessageAdmin(admin.ModelAdmin):
     list_display = ('from_user','to_user','group','message',)
     filter = ('date_created',)
 
-class GroupUsersInline(admin.TabularInline):                                                                                               
-    model = GroupUser
-    extra = 0
-
 @admin.register(Group)
 class GroupAdmin(admin.ModelAdmin):
     list_display = ('name','admin')
     filter = ('name',)
-    inlines = (GroupUsersInline,)
     

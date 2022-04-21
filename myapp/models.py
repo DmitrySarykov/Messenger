@@ -33,17 +33,6 @@ class Group(models.Model):
         verbose_name = 'Группа'
         verbose_name_plural = 'Группы'
 
-class GroupUser(models.Model):
-    group = models.ForeignKey(Group,on_delete=models.CASCADE, verbose_name='Группа', null=True, blank=True)
-    user = models.ForeignKey(User,on_delete=models.CASCADE, verbose_name='Пользователь')
-    
-    def __str__(self):
-        return f'{self.user}'
-
-    class Meta:
-        verbose_name = 'Участник группы'
-        verbose_name_plural = 'Участники группы'
-
 # Сообщение 
 class Message(models.Model):
     from_user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='От кого', related_name="from_user",null=True,)

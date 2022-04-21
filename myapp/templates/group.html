@@ -4,17 +4,21 @@
 <a href="{% url 'message_list' %}">Назад</a>
 <h2>
     <img src="/{{group.avatar}}" width="100" height="100" style="object-fit:cover; border-radius:50%;">
-    <span id="group-name">{{group.name}}</span> <button id="edit-group">Изменить</button>
+    <span id="group-now">{{group.name}}</span> 
+    <button id="edit_group" type="button">Изменить</button>
+    <button id="delete_group" type="button">Удалить группу</button>
     <div class="group-edit-form" style="display:none">
         <input type="text" id="group-name" value="{{group.name}}" name="group-name">
-        <button id="group-update" type="button">Изменить</button>
+        <button id="group_update" type="button">Изменить</button>
     </div>
 </h2>
 <h4>Участники: 
     <img src="/{{group.admin.userprofile.avatar}}" width="50" height="50" style="object-fit:cover; border-radius:50%;">{{group.admin}}
-    {% for user in user_list %}
-    <img src="/{{user.user.userprofile.avatar}}" width="50" height="50" style="object-fit:cover; border-radius:50%;"> 
-    {{user}} 
+    {% for user in group.users.all %}
+        {% if user != group.admin %}
+            <img src="/{{user.userprofile.avatar}}" width="50" height="50" style="object-fit:cover; border-radius:50%;"> 
+            {{user}}
+        {% endif %}
     {% endfor %}
 </h4>
 <div id="chat">
@@ -31,4 +35,5 @@
 {% block scripts %}
 <script type="text/javascript" src="{% static 'scripts/group.js' %}"></script>
 <script type="text/javascript" src="{% static 'scripts/group-update.js' %}"></script>
+<script type="text/javascript" src="{% static 'scripts/group-delete.js' %}"></script>
 {% endblock %}

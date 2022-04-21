@@ -7,7 +7,7 @@ urlpatterns = [
     path("users/", UserListView.as_view(), name="user_list"),  
     path("messages/", MessageListView.as_view(), name="message_list"),
     path("chat/<to_user>/", ChatView.as_view(), name="chat"),
-    path("group/<pk>/", GroupView.as_view(), name="group"),
+    path("groups/<pk>/", GroupView.as_view(), name="group"),
     path("group/create/", GroupCreateView.as_view(), name="group_create"),  
     path("account/<pk>/", UserUpdateView.as_view(), name="account_edit"),  
     
@@ -20,5 +20,5 @@ urlpatterns = [
     path("api/group/list/", GroupListAPI.as_view(), name="api_group_list"),
     path("api/group/create/", GroupCreateAPI.as_view(), name="api_group_create"),
     path("api/group/update/<pk>", GroupUpdateAPI.as_view(), name="api_group_update"), 
-
+    path("api/group/delete/<pk>", GroupDeleteAPI.as_view(), name="api_group_delete"), 
  ]

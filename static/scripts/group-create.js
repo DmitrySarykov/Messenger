@@ -1,36 +1,37 @@
-edit_group.addEventListener("click", ()=>{
-    let form_edit = document.querySelector(".group-edit-form");
-    if (form_edit.style.display == "none"){
-        form_edit.style.display = "block";
-    } else{
-        form_edit.style.display = "none";
-    }
-});
-
-group_update.addEventListener("click", (e)=>{
-    const srftoken = document.getElementById("csrf_token").value
-    const groupname = document.getElementById("groupname").value;
-    const group = document.getElementById("group").value;
-    let url = `http://127.0.0.1:8000/api/group/update/${group}`
+group_create.addEventListener("click", (e)=>{
+    const srftoken = document.getElementById("csrf_token").value;
+    const group_name = document.getElementById("group-name").value;
+    const group_admin = document.getElementById("group-admin").value;
+    const users = document.querySelectorAll(".users_input");
+    const group_users = []
+    var j = 0; 
+    for (let i = 0; i < users.length; i++) {
+        if (users[i].checked == true){
+            group_users[j] = users[i].value;
+            j++;
+        }
+    } 
     const options = {
-         method: 'PATCH',
+         method: 'POST',
          body: JSON.stringify({
-            name: groupname,
+            admin: group_admin,
+            name: group_name,
+            users: group_users,
          }),
          headers: {
              "X-CSRFToken": srftoken,
              "Content-type": "application/json; charset=UTF-8"
          }
     }
-    fetch(url,options)
+    fetch("http://127.0.0.1:8000/api/group/create/",options)
     .then(response => response.json())
-    .then(json => changeGroup(json))
-    document.querySelector(".group-edit-form").style.display = "none";
+    .then(json => console.log(json)).then(groupRedirect());
+    let form = document.getElementById("group-create-form");
+    form.reset();
 });
 
-function changeGroup(json){
-    let group = document.getElementById("group-name");
-    group.innerHTML = json.name;
+function groupRedirect(){
+    window.location.replace('http://127.0.0.1:8000/messages/');
 }
 
 
