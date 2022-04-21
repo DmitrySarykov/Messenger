@@ -9,7 +9,7 @@ edit_group.addEventListener("click", ()=>{
 
 group_update.addEventListener("click", (e)=>{
     const srftoken = document.getElementById("csrf_token").value
-    const groupname = document.getElementById("group-name").value;
+    const groupname = document.getElementById("groupname").value;
     const group = document.getElementById("group").value;
     let url = `http://127.0.0.1:8000/api/group/update/${group}`
     const options = {

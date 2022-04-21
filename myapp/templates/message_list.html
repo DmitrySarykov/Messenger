@@ -10,6 +10,7 @@
         </a>
     </h3>
 {% endfor %}
+<div id="group-list">
 {% for group in group_list %}
     <h3>
         <a href="{% url "group" group.pk %}">
@@ -18,5 +19,8 @@
         </a>
     </h3>
 {% endfor %}
-<p><a href="{% url 'group_create' %}">Создать группу</a></p>    
+</div>
+{% endblock %}
+{% block scripts %}
+
 {% endblock %}

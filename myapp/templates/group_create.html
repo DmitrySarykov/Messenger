@@ -1,10 +1,14 @@
 {% extends 'base.html' %}
+{% load static %}
+
 {% block content %}
 <a href="{% url 'message_list' %}">Назад</a>
-<h2>Создание группы</h2>
-  <form action="" method="post">
-        {% csrf_token %}
-        {{form}}
-        <button type="submit">Отправить</button>
-  </form>
+<input type="hidden" id="csrf_token" value="{{csrf_token}}">
+<input type="text" id="group-admin" value="" name="group-admin">
+<input type="text" id="group-name" value="" name="group-name">
+
+<button id="group-create" type="button">Создать</button>
+{% endblock %}
+{% block scripts %}
+{% comment %} <script type="text/javascript" src="{% static 'scripts/group-create.js' %}"></script> {% endcomment %}
 {% endblock %}

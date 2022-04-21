@@ -6,11 +6,6 @@ class MessageForm(forms.ModelForm):
         model = Message
         fields = '__all__'
 
-class GroupForm(forms.ModelForm):
-    class Meta:
-        model = Group
-        fields = '__all__'
-
 class UserProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile

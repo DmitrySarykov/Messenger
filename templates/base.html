@@ -20,6 +20,8 @@
         <a href="{% url 'account_edit' user.pk %}">Изменить</a>
         <a href="{% url 'account_logout' %}">Выйти</a>
     </h2>
+    <a href="{% url 'user_list' %}">Пользователи</a>
+    <a href="{% url 'group_create' %}">Создать группу</a>
     {% else %}
         <a href="{% url 'account_login' %}">Войти</a>
     {% endif %}

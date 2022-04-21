@@ -36,7 +36,7 @@ var ws;
     const message = document.getElementById('message').value;
     const srftoken = document.getElementById("csrf_token").value
     const group = document.getElementById("group").value;
-    const user_from = document.getElementById("user_from").value;
+    const user_from = document.getElementById("user-from").value;
     const options = {
          method: 'POST',
          body: JSON.stringify({

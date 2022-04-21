@@ -11,13 +11,11 @@
       <p>{{message}}</p>
     {% endfor %}
   </div>
-
     <input type="hidden" id="csrf_token" value="{{csrf_token}}">
-    <input type="hidden" id="user_to" value="{{user_to.pk}}" name="user_to"> 
-    <input type="hidden" id="user_from" value="{{user_from.pk}}" name="user_from">
+    <input type="hidden" id="user-to" value="{{user_to.pk}}" name="user-to"> 
+    <input type="hidden" id="user-from" value="{{user_from.pk}}" name="user-from">
     <p>Сообщение:<br><textarea id="message" value="" name="message"></textarea></p>
     <button id="btn" type="submit">Отправить</button> 
-  
 {% endblock %}
 {% block scripts %}
 <script type="text/javascript" src="{% static 'scripts/chat.js' %}"></script>

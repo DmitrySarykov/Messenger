@@ -38,8 +38,8 @@ var ws;
     // Отправка сообщения json через API
     const message = document.getElementById('message').value;
     const srftoken = document.getElementById("csrf_token").value
-    const user_to = document.getElementById("user_to").value;
-    const user_from = document.getElementById("user_from").value;
+    const user_to = document.getElementById("user-to").value;
+    const user_from = document.getElementById("user-from").value;
     const options = {
          method: 'POST',
          body: JSON.stringify({

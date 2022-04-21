@@ -20,6 +20,10 @@ class HomeView(LoginRequiredMixin,TemplateView):
     def get(self, *args, **kwargs):
         return redirect('message_list')
 
+class UserListView(LoginRequiredMixin,ListView):
+    model=User
+    template_name = 'user_list.html'
+    
 class UserUpdateView(LoginRequiredMixin,UpdateView):
     model=UserProfile
     form_class = UserProfileForm
@@ -57,29 +61,13 @@ class ChatView(LoginRequiredMixin,ListView):
         ).order_by("date")
         return context
 
-class GroupCreateView(LoginRequiredMixin,CreateView):
-    model=Group
-    form_class = GroupForm
-    template_name = 'group_create.html'
-
-    def get_initial(self):
-        initial = super().get_initial()
-        initial['admin'] = self.request.user
-        return initial
-
-    def form_valid(self, form):
-        form.instance.save()
-        group_pk = form.instance.pk
-        group = Group.objects.get(pk = group_pk)
-        users = form.cleaned_data['users']
-        for user in users:
-            obj = GroupUser.objects.create(group = group, user = user)
-            obj.save()
-        
-        return super().form_valid(form)    
+class GroupCreateView(LoginRequiredMixin,TemplateView):
+    model = Group
+    template_name = 'group_create.html'  
     
+
 class GroupView(LoginRequiredMixin,TemplateView):
-    model=Group
+    model = Group
     template_name = 'group.html'
 
     def get_context_data(self,**kwargs):
@@ -90,24 +78,25 @@ class GroupView(LoginRequiredMixin,TemplateView):
         context['message_list'] = Message.objects.filter(group = self.kwargs['pk'])
         return context  
 
-# API
-class MessageAPIView(generics.ListAPIView):
+# API Message
+class MessageListAPI(generics.ListAPIView):
     queryset = Message.objects.all()
     serializer_class = MessageSerializer
 
-class MessageAPICreate(generics.CreateAPIView):
+class MessageCreateAPI(generics.CreateAPIView):
     serializer_class = MessageSerializer
 
-class UserAPI(generics.ListAPIView):
+# API User
+class UserListAPI(generics.ListAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
+# API Group
 class GroupListAPI(generics.ListAPIView):
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
 
-
-class GroupUpdateAPI(generics.CreateAPIView):
+class GroupCreateAPI(generics.CreateAPIView):
     serializer_class = GroupSerializer
 
 class GroupUpdateAPI(generics.UpdateAPIView):
@@ -116,3 +105,5 @@ class GroupUpdateAPI(generics.UpdateAPIView):
     def get_object(self):
         obj = Group.objects.get(pk = self.kwargs['pk'])
         return obj
+
+# API Chat
