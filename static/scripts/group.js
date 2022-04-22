@@ -4,10 +4,15 @@ var ws;
   const sendBtn = document.querySelector('#btn');
   const chat = document.querySelector('#chat');
 
-  function showMessage(data) {
+  function showMessage(json, pos = false) {
     let item = document.createElement('div');
-    item.className = "message";
-    item.append(data);
+    if (pos == true){
+      item.className = "message message-user";
+    } else{
+      item.className = "message";
+    }
+    let date = dateformat(json.date);
+    item.append(`${json.message} ${date}`);
     chat.insertAdjacentElement("afterend",item);
   }
   function init() {
@@ -21,7 +26,9 @@ var ws;
       console.log('Соединение установлено!');
     }
     ws.onmessage = ({ data }) => {
-      showMessage(data);
+      data = JSON.parse(data) // Преобразуем данные из Json
+      pos = false;
+      showMessage(data, pos);
     };
     ws.onclose = function() {
       ws = null;
@@ -53,8 +60,9 @@ var ws;
     fetch('http://127.0.0.1:8000/api/message/create/',options)
     .then(response => response.json())
     .then(json => {
-        ws.send(`${json.date} ${user_from}: ${message}`);
-        showMessage(`${json.date} ${user_from}: ${message}`);
+        right = true; // Если отправитель текущий пользователь, т.е на его стороне произошла отправка
+        ws.send(JSON.stringify(json)); // Посылаем данные получателю
+        showMessage(json, right); // Отображение у отправителя
         document.getElementById('message').value = "";
     }).catch(console.log("Ошибка"))
     
@@ -63,16 +71,10 @@ var ws;
 })();
 
 function dateformat(value){
-    let date = new Date(value);
-    let d = date.getDate();
-    let m = date.getMonth()+1
-    if (m < 9){
-      m = "0" + m
-    }
-    let y = date.getFullYear();
+  let date = new Date(value);
     let h = date.getHours();
     let i = date.getMinutes();
     let s = date.getSeconds();
-    date = d + "." + m + "." + y + " " + h + ":" + i + ":" + s;
+    date = h + ":" + i + ":" + s;
     return date
 }

@@ -6,14 +6,16 @@ var ws;
 (function() {
   const sendBtn = document.querySelector('#btn');
   const chat = document.querySelector('#chat');
-
-  function showMessage(json) {
-    var username = fetch(`http://127.0.0.1:8000/api/user/${json.from_user}`).then(response => response.json())
-    console.log(username.json) 
+  
+  function showMessage(json, pos = false) { 
     let item = document.createElement('div');
+    if (pos == true){
+      item.className = "message message-user";
+    } else{
+      item.className = "message";
+    }
     let date = dateformat(json.date);
-    item.className = "message";
-    item.append(`${date} ${json.from_user}: ${json.message}`);
+    item.append(`${json.message} ${date}`);
     chat.insertAdjacentElement("afterend",item);
   }
   function init() {
@@ -26,8 +28,11 @@ var ws;
     ws.onopen = () => {
       console.log('Соединение установлено!');
     }
+    // Для получателя
     ws.onmessage = ({ data }) => {
-      showMessage(data);
+      data = JSON.parse(data) // Преобразуем данные из Json
+      pos = false;
+      showMessage(data, pos);
     };
     ws.onclose = function() {
       ws = null;
@@ -59,10 +64,11 @@ var ws;
     fetch('http://127.0.0.1:8000/api/message/create/',options)
     .then(response => response.json())
     .then(json => {
-        ws.send(json);
-        showMessage(json);
+        right = true; // Если отправитель текущий пользователь, т.е на его стороне произошла отправка
+        ws.send(JSON.stringify(json)); // Посылаем данные получателю
+        showMessage(json, right); // Отображение у отправителя
         document.getElementById('message').value = "";
-    })
+    }).catch(console.log("Ошибка"))
     
   }
   init();
@@ -72,6 +78,7 @@ function dateformat(value){
     let date = new Date(value);
     let h = date.getHours();
     let i = date.getMinutes();
-    date = h + ":" + i;
+    let s = date.getSeconds();
+    date = h + ":" + i + ":" + s;
     return date
 }

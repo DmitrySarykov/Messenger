@@ -109,7 +109,7 @@ nav a:hover{
     display: flex;
     flex-direction: column;
     gap: 10px;
-    margin: 0 20%;
+    margin: 0 0%;
     padding: 20px;
     height: calc(100% - 50px);
     border-radius: 10px;
