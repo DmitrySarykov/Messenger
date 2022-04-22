@@ -1,36 +1,43 @@
 {% extends 'base.html' %}
 {% load static %}
+{% block nav %}
+<nav>
+    <a class="current-link" href="{% url 'message_list' %}">Сообщения</a>
+    <a href="{% url 'user_list' %}">Пользователи</a>
+    <a href="{% url 'group_create' %}">Создать группу</a>
+</nav>
+{% endblock %}
 {% block content %}
 <h2>Сообщения</h2>
-<div id="message_list">
-{% for user in user_list %}
-    <h3 id="user-{{user.pk}}">
-        <a href="{% url "chat" user.pk %}">
+<div id="message_list" class="message-list">
+    {% for user in user_list %}
+        <div id="user-{{user.pk}}" class="list-item">
+            <a href="{% url "chat" user.pk %}">
             {% if user.userprofile.avatar %}
                 <img src="/{{user.userprofile.avatar}}" width="100" height="100" style="object-fit:cover; border-radius:50%;">
             {% else %}
                 <img src="/static/images/default/user.jpg" width="100" height="100" style="object-fit:cover; border-radius:50%;">
             {% endif %}
-        {{user}}
-        </a>
-    </h3>
-{% endfor %}
-{% for group in group_list %}
-    <h3 id="group-{{group.pk}}">
-        <a href="{% url "group" group.pk %}">
-            {% if group.avatar %}
-                <img src="/{{group.avatar}}" width="100" height="100" style="object-fit:cover; border-radius:50%;">
-            {% else %}
-                <img src="/static/images/default/group.jpg" width="100" height="100" style="object-fit:cover; border-radius:50%;">
+            {{user}}
+            </a>
+        </div>
+    {% endfor %}
+    {% for group in group_list %}
+        <div id="group-{{group.pk}}" class="list-item">
+            <a href="{% url "group" group.pk %}">
+                {% if group.avatar %}
+                    <img src="/{{group.avatar}}" width="100" height="100" style="object-fit:cover; border-radius:50%;">
+                {% else %}
+                    <img src="/static/images/default/group.jpg" width="100" height="100" style="object-fit:cover; border-radius:50%;">
+                {% endif %}
+                {{group}}
+            </a>
+            <input type="hidden" value="{{group.pk}}">
+            {% if group.admin == request.user %}
+                <button class="delete_group" type="button">Удалить</button>
             {% endif %}
-            {{group}}
-        </a>
-        <input type="hidden" value="{{group.pk}}">
-        {% if group.admin == request.user %}
-            <button class="delete_group" type="button">Удалить группу</button>
-        {% endif %}
-    </h3>
-{% endfor %}
+        </div>
+    {% endfor %}
 </div>
 <input type="hidden" id="csrf_token" value="{{csrf_token}}">
 {% endblock %}

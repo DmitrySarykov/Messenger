@@ -1,22 +1,36 @@
 {% extends 'base.html' %}
 {% load static %}
-
+{% block nav %}
+<nav>
+    <a href="{% url 'message_list' %}">Сообщения</a>
+    <a href="{% url 'user_list' %}">Пользователи</a>
+    <a class="current-link" href="{% url 'group_create' %}">Создать группу</a>
+</nav>
+{% endblock %}
 {% block content %}
-<a href="{% url 'message_list' %}">Назад</a>
-<form id="group-create-form">
+<h2>Создание группы</h2>
+<form id="group-create-form" class="group-create">
     <input type="hidden" id="csrf_token" value="{{csrf_token}}">
     <label for="group-admin">Создатель<input type="text" id="group-admin" value="{{user_admin.pk}}" name="group-admin"></label>
     <label for="group-name">Название<input type="text" id="group-name" value="" name="group-name"></label>
     <p>Участники:</p>
     {% for user in user_list %}
+    <div>
         {% if user.pk != user_admin.pk %}
-        <label for="user-{{user.pk}}">{{user.username}}<input type="checkbox" class="users_input" id="user-{{user.pk}}" value="{{user.pk}}" name="group-users"></label>
+        <label for="user-{{user.pk}}" class="group-users-item">
+            {% if user.userprofile.avatar %}
+                <img src="/{{user.userprofile.avatar}}" width="50" height="50" style="object-fit:cover; border-radius:50%;"> 
+            {% else %}
+                <img src="/static/images/default/user.jpg" width="50" height="50" style="object-fit:cover; border-radius:50%;">
+            {% endif %}
+            {{user.username}}
+            <input type="checkbox" class="users_input" id="user-{{user.pk}}" value="{{user.pk}}" name="group-users">
+        </label>
         {% endif %}
+    </div>
     {% endfor %}
-    <br>
     <button id="group_create" type="button">Создать</button>
 </form>
-<span id="message-group"></span>
 {% endblock %}
 {% block scripts %}
 <script type="text/javascript" src="{% static 'scripts/group-create.js' %}"></script>

@@ -1,21 +1,31 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-<a href="{% url 'message_list' %}">Назад</a>
-<h2>
-    <img src="/{{user_to.userprofile.avatar}}" width="100" height="100" style="object-fit:cover; border-radius:50%;"> 
-    {{user_to}}
-</h2>
+<a class="back" href="{% url 'message_list' %}">Назад</a>
+<section class="chat">
+  <div class="chat-user">
+        {% if user_to.userprofile.avatar %}
+          <img src="/{{user_to.userprofile.avatar}}" width="100" height="100" style="object-fit:cover; border-radius:50%;">
+        {% else %}
+          <img src="/static/images/default/user.jpg" width="100" height="100" style="object-fit:cover; border-radius:50%;">
+        {% endif %}
+      {{user_to}}
+  </div>
   <div id="chat">
     {% for message in message_list %}
-      <p>{{message}}</p>
+      <div class="message {% if message.from_user == request.user %}message-user{% endif %}">
+        {{message.date|time:"H:i"}} {{message.from_user}}: {{message}}
+      </div>
     {% endfor %}
   </div>
-    <input type="hidden" id="csrf_token" value="{{csrf_token}}">
-    <input type="hidden" id="user-to" value="{{user_to.pk}}" name="user-to"> 
-    <input type="hidden" id="user-from" value="{{user_from.pk}}" name="user-from">
-    <p>Сообщение:<br><textarea id="message" value="" name="message"></textarea></p>
-    <button id="btn" type="submit">Отправить</button> 
+  <div class="chat-form">
+      <input type="hidden" id="csrf_token" value="{{csrf_token}}">
+      <input type="hidden" id="user-to" value="{{user_to.pk}}" name="user-to"> 
+      <input type="hidden" id="user-from" value="{{user_from.pk}}" name="user-from">
+      <textarea id="message" value="" placeholder="Сообщение..." name="message"></textarea>
+      <button id="btn" type="submit">Отправить</button>
+  </div>
+</section> 
 {% endblock %}
 {% block scripts %}
 <script type="text/javascript" src="{% static 'scripts/chat.js' %}"></script>

@@ -5,7 +5,8 @@ var ws;
   const chat = document.querySelector('#chat');
 
   function showMessage(data) {
-    let item = document.createElement('p');
+    let item = document.createElement('div');
+    item.className = "message";
     item.append(data);
     chat.insertAdjacentElement("afterend",item);
   }

@@ -1,13 +1,15 @@
 {% extends "base.html" %}
-{% block header %}{% endblock %}
-
+{% block header %}
+    <header>
+        <h1>Messenger</h1>
+    </header>
+{% endblock %}
 {% block content %}
-<h1>Войти</h1>
-
-<p>Если у вас ещё нет учётной записи, пожалуйста, сначала
-<a href="{{ signup_url }}">зарегистрируйтесь.</a></p>
-<form class="login" method="POST" action="{% url 'account_login' %}">
+<h2>Войти</h2>
+<form class="login account-form" method="POST" action="{% url 'account_login' %}">
   {% csrf_token %}
+  <p>Если у вас ещё нет учётной записи, пожалуйста, сначала
+  <a href="{{ signup_url }}">зарегистрируйтесь.</a></p>
   {{ form.as_p }}
   <button class="primaryAction" type="submit">Войти</button>
 </form>

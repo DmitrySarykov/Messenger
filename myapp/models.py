@@ -42,7 +42,7 @@ class Message(models.Model):
     message = models.TextField(verbose_name='Сообщение', null=True)
 
     def __str__(self):
-        return f'{dateformat.format(self.date, "d.m.Y H:i:s")} {self.from_user}: {self.message}'
+        return f'{self.message}'
 
     class Meta:
         verbose_name = 'Сообщение'

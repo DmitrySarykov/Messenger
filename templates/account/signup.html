@@ -1,16 +1,17 @@
 {% extends "base.html" %}
-{% block header %}{% endblock %}
-
+{% block header %}
+    <header>
+        <h1>Messenger</h1>
+    </header>
+{% endblock %}
 {% block content %}
-<h1>Регистрация</h1>
-
-<p>Уже зарегистрированы? <a href="{{ login_url }}">Войдите</a></p>
-
-<form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
+<h2>Регистрация</h2>
+<form class="signup account-form" id="signup_form" method="post" action="{% url 'account_signup' %}">
   {% csrf_token %}
-  <p>{{form.username.label_tag}}{{form.username}}</p>
-  <p>{{form.password1.label_tag}}{{form.password1}}</p>
-  <p>{{form.password2.label_tag}}{{form.password2}}</p>
+  <p>Уже зарегистрированы? <a href="{{ login_url }}">Войдите</a></p>
+  {{form.username.label_tag}}{{form.username}}
+  {{form.password1.label_tag}}{{form.password1}}
+  {{form.password2.label_tag}}{{form.password2}}
   <button type="submit">Зарегистрироваться</button>
 </form>
 
